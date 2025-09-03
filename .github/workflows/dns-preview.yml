@@ -17,15 +17,15 @@ jobs:
         uses: actions/checkout@ff7abcd0c3c05ccf6adc123a8cd1fd4fb30fb493
         with:
           token: ${{ steps.generate-token.outputs.token }}
+      - uses: cachix/install-nix-action@v31
       - name: DNSControl check
-        uses: koenrh/dnscontrol-action@v3
-        with:
-          args: check
+        run: nix develop --command dnscontrol check
       - name: DNSControl preview
         id: dnscontrol_preview
-        uses: koenrh/dnscontrol-action@v3
-        with:
-          args: preview
+        run: |
+          echo "preview_comment<<EOF" >> $GITHUB_OUTPUT
+          nix develop --command dnscontrol preview >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
       - uses: mshick/add-pr-comment@v1
         with:
           message: |

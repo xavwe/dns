@@ -22,11 +22,8 @@ jobs:
         uses: actions/checkout@ff7abcd0c3c05ccf6adc123a8cd1fd4fb30fb493
         with:
           token: ${{ steps.generate-token.outputs.token }}
+      - uses: cachix/install-nix-action@v31
       - name: DNSControl check
-        uses: koenrh/dnscontrol-action@v3
-        with:
-          args: check
+        run: nix develop --command dnscontrol check
       - name: DNSControl push
-        uses: koenrh/dnscontrol-action@v3
-        with:
-          args: push
+        run: nix develop --command dnscontrol push
