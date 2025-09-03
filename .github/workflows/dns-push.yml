@@ -1,0 +1,32 @@
+name: push-dns
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Generate token
+        id: generate-token
+        uses: actions/create-github-app-token@8ab05a8a84060745bdc8f0b4f6d8f403c29e06b8
+        with:
+          app-id: ${{ secrets.OCTOHELPER_APPID }}
+          private-key: ${{ secrets.OCTOHELPER_PRIVATEKEY }}
+      - name: Checkout code
+        uses: actions/checkout@ff7abcd0c3c05ccf6adc123a8cd1fd4fb30fb493
+        with:
+          token: ${{ steps.generate-token.outputs.token }}
+      - name: DNSControl check
+        uses: koenrh/dnscontrol-action@v3
+        with:
+          args: check
+      - name: DNSControl push
+        uses: koenrh/dnscontrol-action@v3
+        with:
+          args: push
