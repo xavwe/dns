@@ -8,6 +8,9 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      CF_ACCOUNTID: ${{ secrets.CF_ACCOUNTID }}
+      CF_APITOKEN: ${{ secrets.CF_APITOKEN }}
     permissions:
       id-token: write
       contents: read

@@ -6,6 +6,9 @@ on:
 jobs:
   preview-dns-changes:
     runs-on: ubuntu-latest
+    env:
+      CF_ACCOUNTID: ${{ secrets.CF_ACCOUNTID }}
+      CF_APITOKEN: ${{ secrets.CF_APITOKEN }}
     steps:
       - name: Generate token
         id: generate-token
